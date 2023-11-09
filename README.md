@@ -51,7 +51,12 @@ Default is TiledXY|2Dseries.
 ############################################  
   
   
-## step 2
+## step 2  
+Sequential execution:  
+
+    terastitcher -2 --projin=./xml_import.xml --projout=./xml_displcomp_par.xml --sV=25 --sH=25 --sD=25 --oV=204 --oH=204  
+MPI version:  
+
     mpirun -np 3 python parastitcher.py -2 --projin=./xml_import.xml --projout=./xml_displcomp_par.xml --sV=25 --sH=25 --sD=25 --oV=204 --oH=204> ./step2par3.txt  
   
 -np: Number of the node. At least 2 nodes. On windows is "mpiexec" instead of "mpirun"  
@@ -83,6 +88,12 @@ Just set it to default(25 pixels) is ok
 --projout: Output file  
   
 ## step 6 
+Sequential execution:  
+
+    terastitcher -6 --projin=./place.xml --volout_plugin="TiledXY|3Dseries" --volout=Target Path --resolutions=0 --slicewidth=4096 --sliceheight=4096 --slicedepth=10 
+
+MPI version:  
+
     mpirun -np 3 python ./parastitcher.py -6 --projin=./place.xml --volout_plugin="TiledXY|3Dseries" --volout=Target Path --resolutions=0 --slicewidth=4096 --sliceheight=4096 --slicedepth=10  
 On windows is "mpiexec" instead of "mpirun"   
 --projin: Input file  
@@ -108,8 +119,29 @@ For Terastitcher set up and more detail, you can check here:
 https://github.com/abria/TeraStitcher/wiki  
 
 #  Try  
-Download the demo image:  
-https://www.dropbox.com/scl/fi/bakiyrk9frdr8kylbt4jt/demo_image.zip?rlkey=umlqgt2bwxms5gbuekjs3d6av&dl=0
+1, Download the demo image:  
+https://www.dropbox.com/scl/fi/bakiyrk9frdr8kylbt4jt/demo_image.zip?rlkey=umlqgt2bwxms5gbuekjs3d6av&dl=0  
+It is a 2*2 and 2 channels image, X=2, Y=2, Z=10. Arrangement type is: type 1
+  
+2, Set up Terastitcher and environment according to: https://github.com/abria/TeraStitcher/wiki/Multi-CPU-parallelization-using-MPI-and-Python-scripts  
+
+3, Download the parastitcher.py script.  
+  
+4, Use Move.py or Move_gui.py to create two level hierarchy folder.  
+If using command line version, use the command:
+
+    python Move.py path=D:\example\file target=D:\example\target types=1 x=2 y=2
+Replace path to your path, and target to your target folder.  
+When finished, you will see two folder, C1 and C2. Each folder stands for each channel.  
+
+5, Move the parastitcher.py script in to C1 or C2 folder.  
+Start and use Terastitcher according to ***Using Terastitcher***  
+
+6, Try it on HPC cluster  
+Download the Slurm.sh script, or you can create your own.  
+
+
+
 
 
 
